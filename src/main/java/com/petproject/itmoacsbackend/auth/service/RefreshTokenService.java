@@ -25,12 +25,14 @@ public class RefreshTokenService {
         // удаляем старве токены пользователя
         refreshTokenRepository.deleteByUser(userEntity);
 
+        refreshTokenRepository.flush();
+
         RefreshTokenEntity refreshToken = RefreshTokenEntity.builder()
-                .token(token)
-                .user(userEntity)
-                .expiresAt(LocalDateTime.now().plusDays(fromMillisToDays(refreshExpirationTimeInMillis)))
-                .revoked(false)
-                .build();
+                                                            .token(token)
+                                                            .user(userEntity)
+                                                            .expiresAt(LocalDateTime.now().plusDays(fromMillisToDays(refreshExpirationTimeInMillis)))
+                                                            .revoked(false)
+                                                            .build();
 
         return refreshTokenRepository.save(refreshToken);
     }
@@ -38,8 +40,8 @@ public class RefreshTokenService {
     @Transactional
     public boolean validateRefreshToken(String token) {
         return refreshTokenRepository.findByToken(token)
-                .map(refreshToken -> !refreshToken.isExpired() && !refreshToken.getRevoked())
-                .orElse(false);
+                                     .map(refreshToken -> !refreshToken.isExpired() && !refreshToken.getRevoked())
+                                     .orElse(false);
     }
 
     @Transactional

@@ -17,10 +17,10 @@ public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> 
     @Query("SELECT p FROM PropertyEntity p WHERE " +
             "(:available IS NULL OR p.available = :available) AND " +
             "(:type IS NULL OR p.type = :type) AND " +
-            "(:country IS NULL OR LOWER(p.country) LIKE LOWER(CONCAT('%', :country, '%'))) AND " +
-            "(:region IS NULL OR LOWER(p.region) LIKE LOWER(CONCAT('%', :region, '%'))) AND " +
-            "(:city IS NULL OR LOWER(p.city) LIKE LOWER(CONCAT('%', :city, '%'))) AND " +
-            "(:nearestSubway IS NULL OR LOWER(p.nearestSubway) LIKE LOWER(CONCAT('%', :nearestSubway, '%'))) AND " +
+            "p.country LIKE CONCAT('%', :country, '%') AND " +
+            "p.region LIKE CONCAT('%', :region, '%') AND " +
+            "p.city LIKE CONCAT('%', :city, '%') AND " +
+            "p.nearestSubway LIKE CONCAT('%', :nearestSubway, '%') AND " +
             "(:minPrice IS NULL OR p.price >= :minPrice) AND " +
             "(:maxPrice IS NULL OR p.price <= :maxPrice) AND " +
             "(:minSquare IS NULL OR p.square >= :minSquare) AND " +
@@ -39,9 +39,10 @@ public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> 
             Pageable pageable
     );
 
-    @Query("SELECT p FROM PropertyEntity p WHERE " +
-            "LOWER(p.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    @Query(value = "SELECT * FROM property p WHERE " +
+            "p.title ILIKE CONCAT('%', CAST(:keyword AS text), '%') OR " +
+            "p.description ILIKE CONCAT('%', CAST(:keyword AS text), '%')",
+            nativeQuery = true)
     Page<PropertyEntity> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
 

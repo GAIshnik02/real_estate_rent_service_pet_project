@@ -55,6 +55,11 @@ public class PropertyController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size
     ) {
+        country = country != null ? country : "";
+        region = region != null ? region : "";
+        city = city != null ? city : "";
+        nearestSubway = nearestSubway != null ? nearestSubway : "";
+
         PropertyFilterRequest filter = new PropertyFilterRequest();
         filter.setAvailable(available);
         filter.setType(type);
