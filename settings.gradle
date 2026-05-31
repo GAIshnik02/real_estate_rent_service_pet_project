@@ -1,1 +1,3 @@
 rootProject.name = 'ITMO-ACS-Backend'
+
+includeBuild 'eureka-server'
