@@ -2,8 +2,7 @@ package com.petproject.authservice.service;
 
 import com.petproject.authservice.dto.*;
 import com.petproject.authservice.enums.GlobalRole;
-import com.petproject.authservice.service.JwtService;
-import com.petproject.authservice.service.RefreshTokenService;
+import com.petproject.authservice.security.JwtService;
 import com.petproject.authservice.entities.UserEntity;
 import com.petproject.authservice.repositories.UserRepository;
 import io.jsonwebtoken.security.SecurityException;

@@ -1,7 +1,6 @@
 package com.petproject.authservice.security;
 
 
-import com.petproject.authservice.service.JwtService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

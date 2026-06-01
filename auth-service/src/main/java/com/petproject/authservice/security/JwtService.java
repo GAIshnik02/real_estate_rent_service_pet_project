@@ -1,4 +1,4 @@
-package com.petproject.authservice.service;
+package com.petproject.authservice.security;
 
 import com.petproject.authservice.entities.UserEntity;
 import io.jsonwebtoken.Claims;
@@ -36,6 +36,8 @@ public class JwtService {
         claims.put("userId", user.getId());
         claims.put("role", user.getGlobalRole().name());
         claims.put("username", user.getUsername());
+        claims.put("isRenter", user.getIsRenter());
+        claims.put("isLandlord", user.getIsLandlord());
         return createAccessToken(claims, user.getUsername());
     }
 

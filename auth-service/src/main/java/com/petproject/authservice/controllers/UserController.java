@@ -2,6 +2,7 @@ package com.petproject.authservice.controllers;
 
 
 import com.petproject.authservice.dto.UserResponse;
+import com.petproject.authservice.dto.UserShortResponse;
 import com.petproject.authservice.dto.UserUpdateRequest;
 import com.petproject.authservice.entities.UserEntity;
 import com.petproject.authservice.service.UserService;
@@ -37,6 +38,15 @@ public class UserController {
         UserResponse response = userService.updateUser(request, user);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{user_id}")
+    public ResponseEntity<UserShortResponse> getUserById(
+            @PathVariable("user_id") Long id
+    ) {
+        UserShortResponse response = userService.getShortInfoUserById(id);
+        return ResponseEntity.ok(response);
+    }
+
 
 
     //TODO: Добавить в соответствующие микросервисы

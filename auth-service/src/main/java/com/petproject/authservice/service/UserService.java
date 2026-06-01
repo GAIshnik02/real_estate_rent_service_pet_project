@@ -1,6 +1,7 @@
 package com.petproject.authservice.service;
 
 import com.petproject.authservice.dto.UserResponse;
+import com.petproject.authservice.dto.UserShortResponse;
 import com.petproject.authservice.dto.UserUpdateRequest;
 import com.petproject.authservice.entities.UserEntity;
 import com.petproject.authservice.repositories.UserRepository;
@@ -60,4 +61,20 @@ public class UserService {
 
     }
 
+    private UserShortResponse mapToShortResponse(UserEntity user){
+        return UserShortResponse.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .patronymic(user.getPatronymic())
+                .build();
+    }
+
+    public UserShortResponse getShortInfoUserById(Long id) {
+        UserEntity user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return mapToShortResponse(user);
+    }
 }
