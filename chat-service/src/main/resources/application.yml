@@ -23,10 +23,10 @@ spring:
       - org.springframework.boot.security.autoconfigure.web.servlet.ServletWebSecurityAutoConfiguration
 
   application:
-    name: property-service
+    name: chat-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/itmo-acs-backend-property-service
+    url: jdbc:postgresql://localhost:5432/itmo-acs-backend-chat-service
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -49,4 +49,3 @@ spring:
 jwt:
   access:
     secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-

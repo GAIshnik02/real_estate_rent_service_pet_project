@@ -92,7 +92,7 @@ public class PropertyService {
     }
 
     public Page<PropertyResponse> getFilteredProperties(PropertyFilterRequest filter, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("created_at").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         if (filter.getKeyword() != null && !filter.getKeyword().isBlank()) {
             Page<PropertyEntity> properties = propertyRepository.searchByKeyword(filter.getKeyword(), pageable);
