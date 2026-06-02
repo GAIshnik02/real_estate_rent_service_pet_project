@@ -126,4 +126,22 @@ public class PropertyController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{property_id}/is_exists")
+    public ResponseEntity<Boolean> isPropertyExists(
+            @PathVariable("property_id") Long propertyId,
+            @AuthenticationPrincipal JwtPrincipal user
+    ) {
+        Boolean response = propertyService.checkIfExists(propertyId, user);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{property_id}/owner")
+    public ResponseEntity<Long> getOwnerId(
+            @PathVariable("property_id") Long propertyId
+    ) {
+        Long response = propertyService.findOwnerById(propertyId);
+        return ResponseEntity.ok(response);
+    }
+
+
 }

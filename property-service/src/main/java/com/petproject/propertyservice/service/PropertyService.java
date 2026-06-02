@@ -15,9 +15,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -271,5 +275,34 @@ public class PropertyService {
         Pageable pageable = PageRequest.of(page, size);
         Page<PropertyEntity> properties = propertyRepository.findAllByUserId(user.getUserId(), pageable);
         return properties.map(this::mapToResponse);
+    }
+
+    public Boolean checkIfExists(Long propertyId, JwtPrincipal user) {
+        return propertyRepository.findById(propertyId).isPresent();
+    }
+
+    @KafkaListener(topics = "property.rating.updated", groupId = "property-service-group")
+    public void updateRating(@Payload PropertyRatingUpdateEvent event) {
+        log.info("Received rating update event {}", event.getPropertyId());
+
+        PropertyEntity property = propertyRepository.findById(event.getPropertyId()).orElseThrow(
+                () -> new EntityNotFoundException("Property with id " + event.getPropertyId() + " not found")
+        );
+
+        property.setTotalReviews(property.getTotalReviews() + 1);
+        property.setRatingSum(property.getRatingSum() + event.getRating());
+        BigDecimal newAvgRating = new BigDecimal(property.getRatingSum()/property.getTotalReviews());
+        newAvgRating = newAvgRating.setScale(2, RoundingMode.HALF_UP);
+        Double avgRating = newAvgRating.doubleValue();
+        property.setAvgRating(avgRating);
+        propertyRepository.save(property);
+
+        log.info("Updated property {} rating to {}", event.getPropertyId(), avgRating);
+    }
+
+    public Long findOwnerById(Long propertyId) {
+        return propertyRepository.findUserIdById(propertyId).orElseThrow(
+                () -> new EntityNotFoundException("Property with id " + propertyId + " not found")
+        );
     }
 }

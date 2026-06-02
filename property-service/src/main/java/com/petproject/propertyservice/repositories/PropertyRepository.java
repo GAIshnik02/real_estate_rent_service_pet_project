@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
 @Repository
 public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> {
 
@@ -38,13 +41,14 @@ public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> 
             Pageable pageable
     );
 
-    @Query(value = "SELECT * FROM property p WHERE " +
+    @Query(value = "SELECT * FROM PropertyEntity p WHERE " +
             "p.title ILIKE CONCAT('%', CAST(:keyword AS text), '%') OR " +
             "p.description ILIKE CONCAT('%', CAST(:keyword AS text), '%')",
             nativeQuery = true)
     Page<PropertyEntity> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
 
-
+    @Query("SELECT p.userId FROM PropertyEntity p WHERE p.id = :id")
+    Optional<Long> findUserIdById(@Param("id") Long id);
 
 }

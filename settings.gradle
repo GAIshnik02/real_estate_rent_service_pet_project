@@ -1,3 +1,11 @@
 rootProject.name = 'ITMO-ACS-Backend'
 
 includeBuild 'eureka-server'
+includeBuild 'auth-service'
+includeBuild 'booking-service'
+includeBuild 'chat-service'
+includeBuild 'payment-service'
+includeBuild 'property-service'
+includeBuild 'reviews-service'
+includeBuild 'api-gateway'
+

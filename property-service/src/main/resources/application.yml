@@ -10,7 +10,9 @@ logging:
   level:
     org.springframework.cloud.gateway: DEBUG
     org.springframework.web: DEBUG
-
+    org.springframework.kafka: ERROR
+    org.apache.kafka: ERROR
+    kafka: ERROR
 
 server:
   port: 0
@@ -44,6 +46,17 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: property-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: "com.petproject.propertyservice.dto.PropertyRatingUpdateEvent"
+
 
 
 jwt:
