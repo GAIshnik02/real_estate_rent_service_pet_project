@@ -8,6 +8,7 @@ import com.petproject.authservice.entities.UserEntity;
 import com.petproject.authservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +49,16 @@ public class UserController {
     }
 
 
+    @PostMapping("/makeAdmin/{password}")
+    public ResponseEntity<String> makeAdmin(
+            @PathVariable String password,
+            @AuthenticationPrincipal UserEntity user
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.makeAdmin(user, password));
+    }
 
-    //TODO: Добавить в соответствующие микросервисы
+
+
 //    @GetMapping("/bookings")
 //    public ResponseEntity<Page<BookingResponse>> getBookings(
 //            @RequestParam(defaultValue = "0") int page,

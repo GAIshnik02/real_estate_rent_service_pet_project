@@ -6,6 +6,7 @@ import com.petproject.authservice.dto.UserUpdateRequest;
 import com.petproject.authservice.entities.UserEntity;
 import com.petproject.authservice.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -76,5 +77,17 @@ public class UserService {
     public UserShortResponse getShortInfoUserById(Long id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
         return mapToShortResponse(user);
+    }
+
+    public String makeAdmin(UserEntity user, String password) {
+        if (password.equals("adminpassword")) {
+            user.setIsLandlord(true);
+            userRepository.save(user);
+            return "Success";
+        }
+        else {
+            return "Fail";
+        }
+
     }
 }

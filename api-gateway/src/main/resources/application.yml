@@ -55,5 +55,5 @@ logging:
   pattern:
         console: '%C{1.} [%-5level] %d{HH:mm:ss} - %msg%n'
   level:
-    org.springframework.cloud.gateway: DEBUG
-    org.springframework.web: DEBUG
+    org.springframework.cloud.gateway:
+    org.springframework.web:
